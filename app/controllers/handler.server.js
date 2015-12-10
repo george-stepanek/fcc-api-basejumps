@@ -1,45 +1,31 @@
 'use strict';
 
-var User = require('../models/users');
-var Photo = require('../models/photos.js');
+var request = require('request');
 
 function Handler () {
 
-	this.getAllPhotos = function (req, res) {
-		Photo.find({ }).populate('user').exec(function (err, results) { if (err) { throw err; } res.json(results); });
-	};
-
-	this.getUserPhotos = function (req, res) {
-		User.findOne({ 'id': req.params.id }, function (err, user) { if (err) { throw err; }
-			if (user) {
-				Photo.find({ 'user': user._id }).populate('user').exec(function (err, results) { if (err) { throw err; } res.json(results); });
-			}
-		});
-	};
-	
-	this.getMyPhotos = function (req, res) {
-		User.findOne({ 'id': req.user.id }, function (err, user) { if (err) { throw err; }
-			if (user) {
-				Photo.find({ 'user': user._id }).populate('user').exec(function (err, results) { if (err) { throw err; } res.json(results); });
-			}
-		});
-	};
-	
-	this.addPhoto = function (req, res) {
-		User.findOne({ 'id': req.user.id }, function (err, user) { if (err) { throw err; }
-			if (user) {
-				if(req.query.url != undefined) {
-					var photo = new Photo({ url: req.query.url, user: user });
-					Photo.create(photo, function (err, result) { if (err) { throw err; } res.json(result); });
-				}
-			}
-		});
-	};
-	
-	this.deletePhoto = function (req, res) {
-		if(req.query.photoid != undefined) {
-			Photo.findOneAndRemove({ '_id': req.query.photoid }, function (err, result) { if (err) { throw err; } res.json(result); });
-		}
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/imagesearch/lolcats%20funny
+	this.getImageSearch = function (req, res) {
+		
+		var url = "https://www.googleapis.com/customsearch/v1?searchType=image&key=" + process.env.GOOGLE_API_KEY +
+			"&cx=" + process.env.GOOGLE_SEARCH_ENGINE + "&q=" + req.params.searchterm;
+			
+	  	request.get(url, {json: true}, function(err, result, body) {
+	      	if (err || result.statusCode != 200) {
+	      		throw err;
+	      	} else {
+	      		var output = [];
+	      		for(var i = 0; i < body.items.length; i++) {
+	      			output.push({ 
+	      				url: body.items[i].link, 
+	      				snippet: body.items[i].snippet, 
+	      				thumbnail: body.items[i].image.thumbnailLink,
+	      				context: body.items[i].image.contextLink
+	      			});
+	      		}
+	      		res.json(output);
+	      	}
+	  	});
 	};
 }
 module.exports = Handler;
