@@ -3,7 +3,7 @@
   "main": "server.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/george-stepanek/fcc-nightlife"
+    "url": "git+https://github.com/george-stepanek/fcc-api-basejumps"
   },
   "scripts": {
     "start": "node server.js"
@@ -12,7 +12,6 @@
     "dotenv": "^1.2.0",
     "express": "^4.12.4",
     "express-session": "^1.11.3",
-    "qajax": "^1.3.0",
     "request": "^2.67.0"
   }
 }
