@@ -9,4 +9,7 @@ module.exports = function (app) {
 	
 	app.route('/api/imagesearch/:searchterm')
 		.get(handler.getImageSearch);
+		
+	app.route('/api/latest/imagesearch/')
+		.get(handler.getSearches);
 };

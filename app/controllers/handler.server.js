@@ -1,8 +1,13 @@
 'use strict';
-
 var request = require('request');
+var Search = require('../models/Search.js');
 
 function Handler () {
+
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/latest/imagesearch/
+	this.getSearches = function(req, res) {
+		Search.find({ }).sort({ 'when': 'desc'}).limit(10).exec(function (err, result) { if (err) { throw err; } res.json(result); });			
+	};
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/imagesearch/lolcats%20funny?offset=10
 	this.getImageSearch = function (req, res) {
@@ -16,10 +21,10 @@ function Handler () {
 				url += "&start=" + (offset + 1);
 			}
 		}
-			
+		
 	  	request.get(url, {json: true}, function(err, result, body) {
 	      	if (err || result.statusCode != 200) {
-	      		throw err;
+	      		throw err ? err : result.statusCode;
 	      	} else {
 	      		var output = [];
 	      		for(var i = 0; i < body.items.length; i++) {
@@ -30,6 +35,8 @@ function Handler () {
 	      				context: body.items[i].image.contextLink
 	      			});
 	      		}
+	      		
+  				Search.create({ term: req.params.searchterm }, function (err, result) { if (err) { throw err; } });
 	      		res.json(output);
 	      	}
 	  	});

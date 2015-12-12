@@ -2,10 +2,13 @@
 
 var express = require('express');
 var routes = require('./app/routes/index.js');
+var mongoose = require('mongoose');
 var session = require('express-session');
 
 var app = express();
 require('dotenv').load();
+
+mongoose.connect(process.env.MONGOLAB_URI);
 
 app.use(session({
 	secret: 'secretClementine',
