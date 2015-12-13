@@ -7,6 +7,9 @@ module.exports = function (app) {
 
 	var handler = new Handler();
 	
+	app.route('/api/urlshorten/:url')
+		.get(handler.shortenUrl);
+		
 	app.route('/api/imagesearch/:searchterm')
 		.get(handler.getImageSearch);
 		

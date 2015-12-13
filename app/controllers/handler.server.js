@@ -1,8 +1,18 @@
 'use strict';
 var request = require('request');
 var Search = require('../models/Search.js');
+var GoogleUrl = require( 'google-url' ); //https://www.npmjs.com/package/google-url
 
 function Handler () {
+	
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/urlshorten/https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fgoogle-url
+	this.shortenUrl = function(req, res) {
+		var googleUrl = new GoogleUrl( { key: process.env.GOOGLE_API_KEY });
+		googleUrl.shorten( req.params.url, function( err, shortUrl ) {
+			if(err) throw err;
+			res.json({shortUrl: shortUrl});
+		});
+	};
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/latest/imagesearch/
 	this.getSearches = function(req, res) {
