@@ -10,8 +10,11 @@ module.exports = function (app) {
 	app.route('/api/urlshorten/:url')
 		.get(handler.shortenUrl);
 		
+	app.route('/api/timestamp/:input')
+		.get(handler.timestamp);
+		
 	app.route('/api/imagesearch/:searchterm')
-		.get(handler.getImageSearch);
+		.get(handler.imageSearch);
 		
 	app.route('/api/latest/imagesearch/')
 		.get(handler.getSearches);

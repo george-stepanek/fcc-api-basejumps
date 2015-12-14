@@ -13,14 +13,16 @@ function Handler () {
 			res.json({shortUrl: shortUrl});
 		});
 	};
-
-	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/latest/imagesearch/
-	this.getSearches = function(req, res) {
-		Search.find({ }).sort({ 'when': 'desc'}).limit(10).exec(function (err, result) { if (err) { throw err; } res.json(result); });			
+	
+	// e.g https://fcc-api-basejumps-stepang.c9users.io/api/timestamp/January%201,%202016
+	this.timestamp =  function(req, res) {
+		var timestamp = parseInt(req.params.input, 10);
+		var datetime = timestamp ? timestamp * 1000 : Date.parse(req.params.input);
+		res.json({timestamp: datetime ? datetime / 1000 : null, datestring: datetime ? new Date(datetime).toDateString() : null});
 	};
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/imagesearch/lolcats%20funny?offset=10
-	this.getImageSearch = function (req, res) {
+	this.imageSearch = function (req, res) {
 		
 		var url = "https://www.googleapis.com/customsearch/v1?searchType=image&key=" + process.env.GOOGLE_API_KEY +
 			"&cx=" + process.env.GOOGLE_SEARCH_ENGINE + "&q=" + req.params.searchterm;
@@ -50,6 +52,11 @@ function Handler () {
 	      		res.json(output);
 	      	}
 	  	});
+	};
+
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/latest/imagesearch/
+	this.getSearches = function(req, res) {
+		Search.find({ }).sort({ 'when': 'desc'}).limit(10).exec(function (err, result) { if (err) { throw err; } res.json(result); });			
 	};
 }
 module.exports = Handler;
