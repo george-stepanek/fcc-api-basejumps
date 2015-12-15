@@ -1,12 +1,19 @@
 'use strict';
 
-var path = process.cwd();
-var Handler = require(path + '/app/controllers/handler.server.js');
+var Handler = require(process.cwd() + '/app/controllers/handler.server.js');
 
 module.exports = function (app) {
 
 	var handler = new Handler();
 	
+	app.route('/')
+		.get(function (req, res) {
+			res.sendFile(process.cwd() + '/public/index.html');
+		});
+	
+	app.route('/api/imageanalyse')
+		.post(handler.imageAnalyse);
+
 	app.route('/api/urlshorten/:url')
 		.get(handler.shortenUrl);
 		
