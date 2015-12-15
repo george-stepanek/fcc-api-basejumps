@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+	<body>
+	    <form id="file-form"><input type="file" id="the-file"/></form><button id="upload">Upload</button>
+		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script type="text/javascript">
+		    $(document).ready(function () {
+				$('#upload').click(function () {
+		    		var formData = new FormData($('#file-form')[0]);
+		    		$.ajax({
+		                url: window.location.origin + '/api/imageanalyse/',
+		                type: 'POST',
+		                data: formData,
+                  		enctype: 'multipart/form-data',	
+		                cache: false,
+		                contentType: false,
+		                processData: false
+		            });
+				});
+		    });
+		</script>
+	</body>
+</html>	    
