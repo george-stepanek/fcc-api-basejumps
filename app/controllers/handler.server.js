@@ -74,10 +74,12 @@ function Handler() {
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/whoami/
 	this.whoAmI = function(req, res) {
+		var start = req.headers['user-agent'].indexOf('('),
+			end = req.headers['user-agent'].indexOf(')');
 		res.json({ 
 			ipaddress: req.headers['x-forwarded-for'],
-			language: req.headers['accept-language'],
-			software: req.headers['user-agent']
+			language: req.headers['accept-language'].split(',')[0],
+			software: req.headers['user-agent'].substring(start + 1, end)
 		});
 	};
 }
