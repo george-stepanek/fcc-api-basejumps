@@ -7,9 +7,7 @@ module.exports = function (app) {
 	var handler = new Handler();
 	
 	app.route('/')
-		.get(function (req, res) {
-			res.sendFile(process.cwd() + '/public/index.html');
-		});
+		.get(function (req, res) { res.sendFile(process.cwd() + '/public/index.html');});
 
 	var upload = require('multer')({ dest: './uploads' });
 	app.route('/api/fileanalyse')
