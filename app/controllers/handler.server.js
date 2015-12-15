@@ -7,7 +7,9 @@ function Handler () {
 	
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io
 	this.fileAnalyse = function(req, res) {
-		res.json({fileSize: req.file.size});
+		var size = req.file.size;
+		require('fs').unlinkSync(req.file.path);
+		res.json({fileSize: size});
 	};
 	
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/urlshorten/https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fgoogle-url
