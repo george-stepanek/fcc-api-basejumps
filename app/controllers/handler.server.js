@@ -71,5 +71,14 @@ function Handler() {
 			res.json(result);
 		});
 	};
+
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/whoami/
+	this.whoAmI = function(req, res) {
+		res.json({ 
+			ipaddress: req.headers['x-forwarded-for'],
+			language: req.headers['accept-language'],
+			software: req.headers['user-agent']
+		});
+	};
 }
 module.exports = Handler;

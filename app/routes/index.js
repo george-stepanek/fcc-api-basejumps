@@ -24,4 +24,7 @@ module.exports = function (app) {
 		
 	app.route('/api/latest/imagesearch/')
 		.get(handler.getSearches);
+		
+	app.route('/api/whoami/')
+		.get(handler.whoAmI);
 };
