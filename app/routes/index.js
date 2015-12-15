@@ -10,9 +10,10 @@ module.exports = function (app) {
 		.get(function (req, res) {
 			res.sendFile(process.cwd() + '/public/index.html');
 		});
-	
-	app.route('/api/imageanalyse')
-		.post(handler.imageAnalyse);
+
+	var upload = require('multer')({ dest: './uploads' });
+	app.route('/api/fileanalyse')
+		.post(upload.single('0'), handler.fileAnalyse);
 
 	app.route('/api/urlshorten/:url')
 		.get(handler.shortenUrl);

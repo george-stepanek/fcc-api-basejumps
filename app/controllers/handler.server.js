@@ -1,13 +1,13 @@
 'use strict';
 var request = require('request');
 var Search = require('../models/Search.js');
-var GoogleUrl = require( 'google-url' ); //https://www.npmjs.com/package/google-url
+var GoogleUrl = require( 'google-url' );
 
 function Handler () {
 	
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io
-	this.imageAnalyse = function(req, res) {
-		console.log(req);
+	this.fileAnalyse = function(req, res) {
+		res.json({fileSize: req.file.size});
 	};
 	
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/urlshorten/https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fgoogle-url
