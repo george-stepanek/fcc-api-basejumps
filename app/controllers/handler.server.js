@@ -66,9 +66,9 @@ function Handler() {
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/latest/imagesearch/
 	this.getSearches = function(req, res) {
-		Search.find({ }).sort({ 'when': 'desc' }).limit(10).exec(function(err, result) {
+		Search.find({ }).sort({ 'when': 'desc' }).limit(10).exec(function(err, results) {
 			if (err) throw err;
-			res.json(result);
+			res.json(results.map( function(obj) { return {term: obj.term, when: obj.when}; }));
 		});
 	};
 
