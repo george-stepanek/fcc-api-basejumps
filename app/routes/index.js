@@ -15,6 +15,9 @@ module.exports = function (app) {
 
 	app.route('/api/urlshorten/:url')
 		.get(handler.shortenUrl);
+	
+	app.route('/url/:id')
+		.get(handler.unShortenUrl);
 		
 	app.route('/api/timestamp/:input')
 		.get(handler.timestamp);

@@ -1,7 +1,7 @@
 'use strict';
 var request = require('request');
 var Search = require('../models/Search.js');
-var GoogleUrl = require('google-url');
+var Url = require('../models/Url.js');
 
 function Handler() {
 
@@ -14,10 +14,26 @@ function Handler() {
 
 	// e.g. https://fcc-api-basejumps-stepang.c9users.io/api/urlshorten/https%3A%2F%2Fwww.npmjs.com%2Fpackage%2Fgoogle-url
 	this.shortenUrl = function(req, res) {
-		var googleUrl = new GoogleUrl({ key: process.env.GOOGLE_API_KEY	});
-		googleUrl.shorten(req.params.url, function(err, shortUrl) {
-			if (err) throw err;
-			res.json({ shortUrl: shortUrl });
+		Url.findOne({ longUrl: req.params.url }, function(err, result) {
+			if (err) { throw err; }
+			if(result) {
+				res.json({ longUrl: result.longUrl, shortUrl: process.env.APP_URL + "url/" + result._id });
+			} else {
+				Url.create({ longUrl: req.params.url }, function(err, result2) { 
+					if (err) { throw err; } 
+					res.json({ longUrl: result2.longUrl, shortUrl: process.env.APP_URL + "url/" + result2._id });
+				});				
+			}
+		});
+	};
+	
+	// e.g. https://fcc-api-basejumps-stepang.c9users.io/url/1
+	this.unShortenUrl = function(req, res) {
+		Url.findOne({ _id: req.params.id }, function(err, result) {
+			if (err) { throw err; }
+			if(result) {
+				res.redirect(result.longUrl);
+			}
 		});
 	};
 
