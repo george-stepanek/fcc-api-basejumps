@@ -19,10 +19,14 @@ function Handler() {
 			if(result) {
 				res.json({ longUrl: result.longUrl, shortUrl: process.env.APP_URL + "url/" + result._id });
 			} else {
-				Url.create({ longUrl: req.params.url }, function(err, result2) { 
-					if (err) { throw err; } 
-					res.json({ longUrl: result2.longUrl, shortUrl: process.env.APP_URL + "url/" + result2._id });
-				});				
+				if(!/^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/.test(req.params.url)) {
+					res.json("Error: this does not appear to be a valid url.");
+				} else {
+					Url.create({ longUrl: req.params.url }, function(err, result2) { 
+						if (err) { throw err; } 
+						res.json({ longUrl: result2.longUrl, shortUrl: process.env.APP_URL + "url/" + result2._id });
+					});
+				}
 			}
 		});
 	};
