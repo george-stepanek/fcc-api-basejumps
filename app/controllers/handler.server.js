@@ -64,8 +64,11 @@ function Handler() {
 		}
 
 		request.get(url, { json: true }, function(err, result, body) {
-			if (err || result.statusCode != 200) {
-				throw err ? err : result.statusCode;
+			if (err) {
+				res.json({error: err});
+			}
+			else if (result.statusCode != 200) {
+				res.json(body);	
 			}
 			else {
 				var output = [];
