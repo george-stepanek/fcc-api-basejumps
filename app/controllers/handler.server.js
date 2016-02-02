@@ -72,15 +72,17 @@ function Handler() {
 			}
 			else {
 				var output = [];
-				for (var i = 0; i < body.items.length; i++) {
-					output.push({
-						url: body.items[i].link,
-						snippet: body.items[i].snippet,
-						thumbnail: body.items[i].image.thumbnailLink,
-						context: body.items[i].image.contextLink
-					});
+				if(body.items) {
+					for (var i = 0; i < body.items.length; i++) {
+						output.push({
+							url: body.items[i].link,
+							snippet: body.items[i].snippet,
+							thumbnail: body.items[i].image.thumbnailLink,
+							context: body.items[i].image.contextLink
+						});
+					}
 				}
-
+	
 				Search.create({	term: req.params.searchterm	}, function(err, result) { if (err) throw err; });
 				res.json(output);
 			}
